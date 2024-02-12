@@ -1,0 +1,88 @@
+using GSYSAMS.Common;
+using GSYSAMSBC;
+using GSYSAMSENTITY;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace GSYSAMS.Controllers
+{
+    public class MasterController : Controller
+    {
+        //
+        // GET: /Master/
+
+        public ActionResult DepartmentMaster()
+        {
+            return View();
+        }
+
+        public ActionResult GetDepartmentMasterPageload()
+        {
+
+            RequestDepartmentMaster request = new RequestDepartmentMaster();
+            request.reqdepartmentmaster = new DepartmentMasterEntity();
+            ResponseDepartmentMaster response = new ResponseDepartmentMaster();
+      //      request.reqdepartmentmaster.USERCODE = Session["LoginEmployeeCode"].ToString();
+            DepartmentMasterBC bc = new DepartmentMasterBC();
+            response = bc.DepartmentMasterPageloadBC(request);
+            string resulttable = Utility.DataTableToJSONWithJavaScriptSerializer(response.JS_Status)
+            + "|" + Utility.DataTableToJSONWithJavaScriptSerializer(response.JS_Departmentdetails);
+            var data = resulttable;
+            JsonResult json = Json(data, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = int.MaxValue;
+            return json;
+        }
+
+        public ActionResult InsertDepartmentMaster(string actiontype, string AUTOID, string DEPARTMENTCODE, string DEPARTMENTNAME, string STATUS)
+        {
+            RequestDepartmentMaster request = new RequestDepartmentMaster();
+            ResponseDepartmentMaster response = new ResponseDepartmentMaster();
+            request.reqdepartmentmaster = new DepartmentMasterEntity();
+            request.reqdepartmentmaster.DEPARTMENTCODE = DEPARTMENTCODE;
+            request.reqdepartmentmaster.DEPARTMENTNAME = DEPARTMENTNAME;
+            request.reqdepartmentmaster.STATUS = STATUS;
+            request.reqdepartmentmaster.USERCODE = "admin";
+       //     request.reqsuppliermaster.USERCODE = Session["LoginEmployeeCode"].ToString();
+            DepartmentMasterBC bc = new DepartmentMasterBC();
+            string value = "Update";
+            if (value != actiontype)
+            {
+                response = bc.InsertDepartmentMasterBC(request);
+            }
+            else
+            {
+                request.reqdepartmentmaster.AUTOID = AUTOID;
+                response = bc.UpdateDepartmentMasterBC(request);
+            }
+
+            ManageError Err = new ManageError();
+
+            string resultjson = Err.GenerateErrorMessages(response.ErrorContainer);
+            resultjson = response.result + "|" + resultjson;
+
+            JsonResult json = Json(resultjson, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = int.MaxValue;
+            return json;
+        }
+
+        public ActionResult GetDepartmentMasterID(string ID)
+        {
+
+            RequestDepartmentMaster request = new RequestDepartmentMaster();
+            ResponseDepartmentMaster response = new ResponseDepartmentMaster();
+            request.reqdepartmentmaster = new DepartmentMasterEntity();
+            request.reqdepartmentmaster.AUTOID = ID;
+            DepartmentMasterBC bc = new DepartmentMasterBC();
+            response = bc.EditDepartmentMasterBC(request);
+
+            var data = Utility.DataTableToJSONWithJavaScriptSerializer(response.JS_Departmentdetails);
+           
+            JsonResult json = Json(data, JsonRequestBehavior.AllowGet);
+            json.MaxJsonLength = int.MaxValue;
+            return json;
+        }
+    }
+}

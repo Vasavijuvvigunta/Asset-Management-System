@@ -1,0 +1,15 @@
+GSY0000	"{A}"	
+GSY0001	User "{A}" Locked.	
+GSY0002	Username and Password Incorrect.	
+GSY0003	The "{A}" can contain only alphabets.	
+GSY0004	The "{A}" can contain only text, no special characters are allowed	
+GSY0005	The "{A}" can contain only numbers, no special characters and alphabets are allowed.	
+GSY0006	The "{A}" can contain only date and time.	
+GSY0007	The "{A}" already exist.	
+GSY0008	This Specific Record has been updated by someone, Please ensure and update again.	
+GSY0009	"{A}" Cannot be Left Empty.	
+GSY0010	Please Select "{A}".	
+GSY1001	The Department Master {A}  Successfully Saved.	
+GSY1002	The Department Code {A} already exit.	
+GSY1003	The Department Master {A} Updated successfully.	
+GSY1004	The Department Code {A} already exit.	
